@@ -1,0 +1,10 @@
+{
+  "scripts": {
+    "compile":"sass ./page/scss/theme.scss ./page/css/theme.css"
+  },
+  "dependencies": {
+    "bootstrap": "^5.3.1",
+    "fs": "^0.0.1-security",
+    "sass": "^1.65.1"
+  }
+}

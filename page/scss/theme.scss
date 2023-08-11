@@ -1,0 +1,14 @@
+@import "../../node_modules/bootstrap/scss/functions";
+@import "../../node_modules/bootstrap/scss/variables";
+
+$custom-colors: (
+    "darkBackground":#3E3E3E,
+    "darkTheme1":#555555,
+    "darkTheme2":#262626,
+    "darkTheme3":#212121
+);
+
+// merge with existing $theme-colors map
+$theme-colors: map-merge($theme-colors, $custom-colors);
+
+@import "../../node_modules/bootstrap/scss/bootstrap";
