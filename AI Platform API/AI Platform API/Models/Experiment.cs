@@ -1,6 +1,6 @@
-﻿namespace AI_Platform_API.Models
+﻿namespace AIPlatformAPI.Models
 {
-    public class Experiment
+    public struct Experiment
     {
         public Group[] AllowedGroups { get; set; }
         public Generation[] Geenrations { get; set; }

@@ -1,4 +1,5 @@
-using AI_Platform_API.Data;
+using AIPlatformAPI.Data;
+using Microsoft.Extensions.Options;
 using UniversalTools;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -7,9 +8,18 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddSingleton(typeof(SQLManager));
 
+builder.Services.AddSingleton(typeof(ExperimentDatabase));
+builder.Services.AddSingleton(typeof(GenerationDatabase));
 builder.Services.AddSingleton(typeof(GroupDatabase));
+builder.Services.AddSingleton(typeof(PermissionDatabase));
 
-builder.Services.AddControllers();
+//JSON
+builder.Services.AddControllers(options =>
+    options.AllowEmptyInputInBodyModelBinding = true
+    ).AddNewtonsoftJson(options =>
+    {
+        options.SerializerSettings.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore;
+    });
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

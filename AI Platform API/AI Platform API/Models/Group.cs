@@ -1,4 +1,4 @@
-﻿namespace AI_Platform_API.Models
+﻿namespace AIPlatformAPI.Models
 {
     public struct Group
     {
