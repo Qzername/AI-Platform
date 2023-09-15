@@ -1,9 +1,15 @@
 const http = require('http');
 var fs = require('fs');
 var url = require('url');
+const { debug } = require('console');
 
 const hostname = '127.0.0.1';
 const port = 8080;
+
+const exceptions = {
+  "/control-panel":"/control-panel.html",
+  "/":"/index.html"
+}
 
 const server = http.createServer((req, res) => {
   
@@ -11,12 +17,16 @@ const server = http.createServer((req, res) => {
 
   var filename;
 
-  if(q.pathname == '/')
-    filename = "/index.html";
-  else
-    filename = "." + q.pathname;
+  filename = q.pathname
+
+  for(let exception in exceptions){
+    if(q.pathname == exception)
+      filename = exceptions[exception]
+  }
+
+  console.log(filename)
   
-  filename = "page/" + filename;
+  filename = "page" + filename;
 
   fs.readFile(filename, function(err, data) {
 
