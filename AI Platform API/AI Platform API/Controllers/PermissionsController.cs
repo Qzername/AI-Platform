@@ -19,17 +19,23 @@ namespace AIPlatformAPI.Controllers
         public IActionResult Get(int experimentID) => Ok(permissionDatabase.GetAllowedGroups(experimentID));
 
         [HttpPost]
-        public IActionResult Post([FromBody] int experimentID, [FromBody] int groupID)
+        public IActionResult Post(PermissionInformation permissionInformation)
         {
-            permissionDatabase.AddPermission(experimentID, groupID);
+            permissionDatabase.AddPermission(permissionInformation.ExperimentID, permissionInformation.GroupID);
             return Ok();
         }
 
         [HttpDelete] // route -> Experiments/5
-        public IActionResult Delete([FromBody] int experimentID, [FromBody] int groupID)
+        public IActionResult Delete(PermissionInformation permissionInformation)
         {
-            permissionDatabase.RemovePermission(experimentID, groupID);
+            permissionDatabase.RemovePermission(permissionInformation.ExperimentID, permissionInformation.GroupID);
             return Ok();
+        }
+
+        public struct PermissionInformation
+        {
+            public int ExperimentID { get; set; }
+            public int GroupID { get; set; }
         }
     }
 }

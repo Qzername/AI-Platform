@@ -20,10 +20,16 @@ namespace AIPlatformAPI.Controllers
         public IActionResult Get(int experimentID) => Ok(generationDatabase.GetGenerations(experimentID));
 
         [HttpPost]
-        public IActionResult Post([FromBody] int experimentID,[FromBody] string name)
+        public IActionResult Post(GenerationInformation information)
         {
-            generationDatabase.CreateGeneration(experimentID, name);
+            generationDatabase.CreateGeneration(information.ExperimentID, information.Name);
             return Ok();
+        }
+
+        public struct GenerationInformation
+        {
+            public int ExperimentID { get; set; }
+            public string Name { get; set; }
         }
 
         [HttpDelete("{generationID}")] // route -> Generations/5

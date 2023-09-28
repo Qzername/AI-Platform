@@ -15,15 +15,23 @@ namespace AIPlatformAPI.Controllers
             this.groupDatabase = groupDatabase;
         }
 
+        [HttpGet]
+        public IActionResult Get() => Ok(groupDatabase.GetAllGroups());
 
         [HttpGet("{name}")]
         public IActionResult Get(string name) => Ok(groupDatabase.GetGroup(name));
 
         [HttpPost]
-        public IActionResult Post([FromBody] string name, [FromBody] string password)
+        public IActionResult Post(GroupInformation groupInformation)
         {
-            groupDatabase.CreateGroup(name, password);
+            groupDatabase.CreateGroup(groupInformation.Name, groupInformation.Password);
             return Ok();
+        }
+
+        public struct GroupInformation
+        {
+            public string Name { get; set; }
+            public string Password { get; set; }    
         }
 
         [HttpDelete("{name}")] // route -> Generations/name
