@@ -1,21 +1,70 @@
 <!DOCTYPE html> 
 <html>
     <head>
-
+        <link rel="stylesheet" href="./css/control-panel.css"/>
     </head>
     <body>
         <h1>AI platform - Control panel</h1>
+        <div class="creation-box">
+            <div>
+                <h2>Create group</h2>
+                <textarea id="groupName" placeholder="Group name"></textarea> <br>
+                <textarea id="groupPassword" placeholder="Group password"></textarea> <br>
+                <button onclick="submitGroup()">Submit</button>
+                <div id="groupList">
+                </div>
+            </div>
+    
+            <div>
+                <h2>Create Experiment</h2>
+                <textarea id="experimentName" placeholder="Experiment name"></textarea> <br>
+                <button onclick="submitExperiment()">Submit</button>
+            </div>
+            
+            <div>
+                <h2>Create generation</h2>
+                <textarea placeholder="Experiment name"></textarea> <br>
+                <button>Choose file</button>
+                <p>file: v1.h5</p>
+                <button>Submit</button>
+            </div>
+    
+        </div>
+        
         <div>
-            <h2>Create group</h2>
-            <textarea id="name" placeholder="Group name"></textarea> <br>
-            <textarea id="password" placeholder="Group password"></textarea> <br>
-            <button onclick="submit()">Submit</button>
-            <div id="groupList">
+            <h2>Experiment list</h2>
+            <div class="experiment">
+                <b style="font-size: 48px;">TTS</b> <br> 
+                <b>Permission:  </b>
+                <select>
+                    <option>Public</option>
+                    <option>Pralcon</option>
+                    <option>Klasa</option>
+                </select> <br> 
+                <b>Generations: </b> <br>  
+                <div class="generation">
+                    <b>V1</b>
+                    <button>Upload model</button> 
+                    <button>Delete Generation</button>
+                </div> 
+                <div class="generation">
+                    <b>GAN test</b>
+                    <button>Upload model</button> 
+                    <button>Delete Generation</button>
+                </div>
+                <div class="generation">
+                    <b>V3</b>
+                    <button>Upload model</button> 
+                    <button>Delete Generation</button>
+                </div>
+                <button>Delete Experiment</button>
             </div>
         </div>
 
         <p id="testOutput"></p>      
         
-        <script src="./js/control-panel.js"></script>
+        <script src="./js/webRequest.js"></script>
+        <script src="./js/control-panel/groups.js"></script>
+        <script src="./js/control-panel/experiments.js"></script>
     </body>
 </html>
