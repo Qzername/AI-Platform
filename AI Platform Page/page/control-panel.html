@@ -23,41 +23,17 @@
             
             <div>
                 <h2>Create generation</h2>
-                <textarea placeholder="Experiment name"></textarea> <br>
-                <button>Choose file</button>
-                <p>file: v1.h5</p>
-                <button>Submit</button>
+                <textarea id="generationExperimentID" placeholder="Experiment id"></textarea> <br>
+                <textarea id="generationName" placeholder="Generation name"></textarea> <br>
+                <button onclick="submitGeneration()">Submit</button>
             </div>
     
         </div>
         
         <div>
             <h2>Experiment list</h2>
-            <div class="experiment">
-                <b style="font-size: 48px;">TTS</b> <br> 
-                <b>Permission:  </b>
-                <select>
-                    <option>Public</option>
-                    <option>Pralcon</option>
-                    <option>Klasa</option>
-                </select> <br> 
-                <b>Generations: </b> <br>  
-                <div class="generation">
-                    <b>V1</b>
-                    <button>Upload model</button> 
-                    <button>Delete Generation</button>
-                </div> 
-                <div class="generation">
-                    <b>GAN test</b>
-                    <button>Upload model</button> 
-                    <button>Delete Generation</button>
-                </div>
-                <div class="generation">
-                    <b>V3</b>
-                    <button>Upload model</button> 
-                    <button>Delete Generation</button>
-                </div>
-                <button>Delete Experiment</button>
+            <div id="experimentList">
+
             </div>
         </div>
 
@@ -66,5 +42,6 @@
         <script src="./js/webRequest.js"></script>
         <script src="./js/control-panel/groups.js"></script>
         <script src="./js/control-panel/experiments.js"></script>
+        <script src="./js/control-panel/generations.js"></script>
     </body>
 </html>
