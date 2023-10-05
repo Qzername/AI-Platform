@@ -50,12 +50,14 @@ function changeGroup(experimentName)
     var current = document.getElementById("select"+experiment.id).value
     var currentID = groups.indexOf(groups.find(x=>x.name == current))
 
-    if(experiment.allowedGroups != null)
+    if(experiment.allowedGroups != null && experiment.allowedGroups.length != 0)
     {
         var jsonOBJ = {
             ExperimentID: experiment.id,
             GroupID: experiment.allowedGroups[0].id
         }
+
+        console.log(experiment.allowedGroups[0].id)
         
         httpRequest(api+"Permissions", "DELETE", JSON.stringify(jsonOBJ))    
     }
@@ -64,7 +66,7 @@ function changeGroup(experimentName)
     {
         var jsonOBJ = {
             ExperimentID: experiment.id,
-            GroupID: currentID
+            GroupID: groups[currentID].id
         }
 
         httpRequest(api+"Permissions", "POST", JSON.stringify(jsonOBJ))

@@ -31,7 +31,17 @@ namespace AIPlatformAPI.Data
 
             return experiments;
         }
-        public Experiment GetExperiment(string name) => sqlManager.SelectSingle<Experiment>($"SELECT * FROM Experiments WHERE Name=\"{name}\"");
+        
+        public Experiment GetExperiment(string name) 
+        { 
+            var experiment = sqlManager.SelectSingle<Experiment>($"SELECT * FROM Experiments WHERE Name=\"{name}\"");
+
+            experiment.Generations = generationDatabase.GetGenerations(experiment.ID);
+            experiment.AllowedGroups = groupDatabase.GetGroup(experiment.ID);
+
+            return experiment;
+        }
+        
         public void CreateExperiment(string name) => sqlManager.ExecuteNonQuery($"INSERT INTO Experiments(Name) VALUES(\"{name}\")");
         public void DeleteExperiment(int experimentID) => sqlManager.ExecuteNonQuery($"DELETE FROM Experiments WHERE ID={experimentID}");
 

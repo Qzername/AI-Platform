@@ -16,7 +16,7 @@ namespace AIPlatformAPI.Data
         public Group[] GetAllGroups() => sqlManager.SelectMany<Group>($"SELECT * FROM Groups");
 
         public Group GetGroup(string name) => sqlManager.SelectSingle<Group>($"SELECT * FROM Groups WHERE name=\"{name}\"");
-        public Group[] GetGroup(int experimentID) => sqlManager.SelectMany<Group>($"SELECT Groups.* FROM Groups, AllowedGroups WHERE AllowedGroups.Group_ID = Groups.ID AND AllowedGroups.Group_ID = {experimentID}");
+        public Group[] GetGroup(int experimentID) => sqlManager.SelectMany<Group>($"SELECT Groups.* FROM Groups, AllowedGroups WHERE AllowedGroups.Group_ID = Groups.ID AND AllowedGroups.Experiment_ID = {experimentID}");
 
         public void CreateGroup(Group group) => CreateGroup(group.Name, group.Password);
         public void CreateGroup(string name, string password) => sqlManager.ExecuteNonQuery($@"INSERT INTO Groups(Name, Password) VALUES(""{name}"",""{password}"")");
