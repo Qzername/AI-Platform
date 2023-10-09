@@ -21,45 +21,24 @@
             <h1>AI Platform</h1>
         </div>
         <div class="row">
-          <div class="col-1 vh-100 bg-darkTheme2" style="min-width: 200px;">
-                ai
+          <div id="experimentList" class="col-1 vh-100 bg-darkTheme2" style="min-width: 200px;">        
           </div>
           <div class="col">
             <div class="row bg-darkTheme2">
-              <div class="col p-0">
+              <div class="col p-0" id="generationList">
                 
-                <div class="d-inline bg-darkTheme2">
-                  <div class="d-inline triangle">
-                    <div class="d-inline px-1 triangle-offset">
-                      v1
-                    </div>
-                  </div>
-                </div>
-
-                <div class="d-inline bg-darkTheme2">
-                  <div class="d-inline triangle">
-                    <div class="d-inline px-1 triangle-offset">
-                      GAN test
-                    </div>
-                  </div>
-                </div>
-
-                <div class="d-inline bg-darkTheme2">
-                  <div class="d-inline triangle">
-                    <div class="d-inline px-1 triangle-offset">
-                      v2
-                    </div>
-                  </div>
-                </div>
-
               </div>
             </div>
             <div class="row">
+              <button>Run</button>
             </div>
           </div>
         </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script> 
+    <script src="./js/webRequest.js"></script>
+    <script src="./js/main/generations.js"></script>
+    <script src="./js/main/experiments.js"></script>
   </body>
 </html>

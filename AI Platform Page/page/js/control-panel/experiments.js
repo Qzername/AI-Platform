@@ -35,8 +35,11 @@ function refreshExperiments(){
         html += "<option>Public</option>"
 
         for(var g in groups)
-            html+=`<option>${groups[g].name}</option>`          
-    
+        {
+            html+= (obj[i].allowedGroups.length > 0 && obj[i].allowedGroups.some(x=>x.name == groups[g].name)) ?`<option selected>` :`<option>`
+            html+= `${groups[g].name}</option>`          
+        }
+
         html+=`</select> <br> 
             <b>Generations: </b> <br> ` 
     
