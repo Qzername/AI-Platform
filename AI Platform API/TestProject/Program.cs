@@ -1,37 +1,30 @@
 ﻿using Microsoft.ML.OnnxRuntime;
 using Microsoft.ML.OnnxRuntime.Tensors;
+using Numpy;
 using System.Diagnostics;
 using System.Drawing;
 
-string onnxModelPath = "./model.onnx";
+float[,,] picture = new float[1, 28, 28];
 
-using (var session = new InferenceSession(onnxModelPath))
-{
-    // Przygotowanie danych wejściowych (analogicznie do poprzednich przykładów)
-    var inputTensor = new DenseTensor<float>(ReadFile("down.png",64,64), new[]{1,64,64,3});
+float[] rawPicture = ReadFile("./8.png", 28, 28);
 
-    // Przygotowanie słownika wejścia dla modelu
-    var inputMeta = session.InputMetadata.First();
-    var inputs = new NamedOnnxValue[] { NamedOnnxValue.CreateFromTensor(inputMeta.Key, inputTensor) };
+for (int x = 0; x < 28; x++)
+    for (int y = 0; y < 28; y++)
+        picture[0, x, y] = rawPicture[(x*28) + y];
 
-    // Wykonanie predykcji
-    using (var results = session.Run(inputs))
-    {
-        // Pobranie tensora wyjściowego
-        var outputTensor = results.First().AsTensor<float>();
+NDarray array = np.array(picture);
 
-        // Przetworzenie i wyświetlenie wyników
-        Console.WriteLine("Wyniki predykcji:");
-        foreach (var result in outputTensor)
-        {
-            Console.WriteLine(result);
-        }
-    }
-}
+Console.WriteLine(array.shape);
+
+var model = Keras.Models.BaseModel.LoadModel("./detector.h5");
+NDarray prediction = model.Predict(array);
+
+Console.WriteLine(prediction);
+
 
 float[] ReadFile(string path, int width, int height)
 {
-    float[] picture = new float[width * height*3];
+    float[] picture = new float[width * height];
 
     Bitmap image = new Bitmap(path);
 
@@ -44,9 +37,7 @@ float[] ReadFile(string path, int width, int height)
 
             int currentPixel = x * y;
 
-            picture[currentPixel] = pixelColor.R/255;
-            picture[currentPixel+1] = pixelColor.G/255;
-            picture[currentPixel+2] = pixelColor.B/255;
+            picture[currentPixel] = pixelColor.R/255+pixelColor.G/255+pixelColor.B/255;
         }
     }
 

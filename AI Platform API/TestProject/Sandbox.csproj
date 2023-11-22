@@ -8,15 +8,27 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Keras.NET" Version="3.8.5" />
     <PackageReference Include="Microsoft.ML" Version="2.0.1" />
     <PackageReference Include="Microsoft.ML.OnnxRuntime" Version="1.15.1" />
     <PackageReference Include="Microsoft.ML.TensorFlow.Redist" Version="0.14.0" />
     <PackageReference Include="System.Drawing.Common" Version="7.0.0" />
-    <PackageReference Include="TensorFlow.NET" Version="0.110.2" />
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="8.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="detector.h5">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="discriminator.h5">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="down.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="generator.h5">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="img.png">
