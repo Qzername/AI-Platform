@@ -21,6 +21,20 @@ NDarray prediction = model.Predict(array);
 
 Console.WriteLine(prediction);
 
+int maxI = 0;
+float max = -1;
+
+for(int i = 0; i<10;i++)
+{
+    if(max < (float)prediction[0][i].PyObject)
+    {
+        max = (float)prediction[0][i].PyObject;
+        maxI = i;
+    }
+}
+
+Console.WriteLine(maxI);
+
 
 float[] ReadFile(string path, int width, int height)
 {
@@ -29,15 +43,15 @@ float[] ReadFile(string path, int width, int height)
     Bitmap image = new Bitmap(path);
 
     // Do some processing
-    for (int x = 0; x < image.Width; x++)
+    for (int y = 0; y < image.Height; y++)
     {
-        for (int y = 0; y < image.Height; y++)
+        for (int x = 0; x < image.Width; x++)
         {
             Color pixelColor = image.GetPixel(x, y);
 
-            int currentPixel = x * y;
+            picture[x+(y * image.Height)] = (255-Convert.ToSingle(pixelColor.R))/255f;
 
-            picture[currentPixel] = pixelColor.R/255+pixelColor.G/255+pixelColor.B/255;
+            Console.WriteLine(picture[x + (y * image.Width)]);
         }
     }
 
