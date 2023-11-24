@@ -10,7 +10,6 @@ namespace AIPlatformAPI.Controllers
     public class ExecuteController : ControllerBase
     {
         [HttpPost("[action]")]
-        [Consumes("multipart/form-data")]
         public async Task<IActionResult> Execute(IFormFile file)
         {
             float[] rawPicture = new float[28 * 28];
