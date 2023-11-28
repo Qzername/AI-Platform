@@ -29,11 +29,18 @@
                 
               </div>
             </div>
-            <div class="row">
-              <input type="file" id="file-input" />
-              <button onclick="runTestModel()">Run</button>
-              <p id="apiResult"></p>
-            </div>
+            <div class="row p-2">
+              <div>
+                <b>Wymagania: </b> <br>
+                - zdjęcie musi być rozdzielczości 28x28, <br>
+                - używaj tylko czarnego i białego koloru, <br>
+                - cyfra musi być czarna na białym tle
+              </div>
+              <div>
+                <input type="file" id="file-input" /><br>
+                <button onclick="runTestModel()" style="width: 300px;">Run</button>
+                <p id="apiResult"></p>  
+              </div>
           </div>
         </div>
     </div>

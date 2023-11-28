@@ -1,4 +1,5 @@
 using AIPlatformAPI.Data;
+using AIPlatformAPI.Services;
 using Microsoft.Extensions.Options;
 using UniversalTools;
 
@@ -24,6 +25,8 @@ builder.Services.AddSingleton(typeof(ExperimentDatabase));
 builder.Services.AddSingleton(typeof(GenerationDatabase));
 builder.Services.AddSingleton(typeof(GroupDatabase));
 builder.Services.AddSingleton(typeof(PermissionDatabase));
+
+builder.Services.AddSingleton(typeof(ModelManagmentService));
 
 //JSON
 builder.Services.AddControllers(options =>

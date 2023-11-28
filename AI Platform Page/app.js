@@ -24,8 +24,6 @@ const server = http.createServer((req, res) => {
       filename = exceptions[exception]
   }
 
-  console.log(filename)
-  
   filename = "page" + filename;
 
   fs.readFile(filename, function(err, data) {

@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AIPlatformAPI.Services;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Numpy;
+using Python.Runtime;
 using System.Drawing;
 
 namespace AIPlatformAPI.Controllers
@@ -9,6 +11,13 @@ namespace AIPlatformAPI.Controllers
     [ApiController]
     public class ExecuteController : ControllerBase
     {
+        ModelManagmentService modelManagmentService;
+
+        public ExecuteController(ModelManagmentService modelManagmentService)
+        {
+            this.modelManagmentService = modelManagmentService; 
+        }
+
         [HttpPost("[action]")]
         public async Task<IActionResult> Execute(IFormFile file)
         {
@@ -37,24 +46,28 @@ namespace AIPlatformAPI.Controllers
                 for (int y = 0; y < 28; y++)
                     picture[0, x, y] = rawPicture[(x * 28) + y];
 
-            NDarray array = np.array(picture);
-
-            var model = Keras.Models.BaseModel.LoadModel("./Database/Models/FirstRun.h5");
-            NDarray prediction = model.Predict(array);
-
-            int maxI = 0;
-            float max = -1;
-
-            for (int i = 0; i < 10; i++)
+            Console.WriteLine("mnnn");
+            using (Py.GIL())
             {
-                if (max < (float)prediction[0][i].PyObject)
-                {
-                    max = (float)prediction[0][i].PyObject;
-                    maxI = i;
-                }
-            }
+                NDarray array;
+                array = np.array(picture);
 
-            return Ok(maxI);
+                NDarray prediction = modelManagmentService.Predict(array);
+
+                int maxI = 0;
+                float max = -1;
+
+                for (int i = 0; i < 10; i++)
+                {
+                    if (max < (float)prediction[0][i].PyObject)
+                    {
+                        max = (float)prediction[0][i].PyObject;
+                        maxI = i;
+                    }
+                }
+
+                return Ok(maxI);
+            }
         }
     }
 }

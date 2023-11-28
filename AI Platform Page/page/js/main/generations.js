@@ -51,6 +51,6 @@ async function runTestModel()
   var jsonReceive = await httpRequestFetch(api + "Execute/Execute", formData)
   
   
-  document.getElementById("generationList").innerHTML = jsonReceive
+  document.getElementById("apiResult").innerHTML = jsonReceive
   console.log(jsonReceive)
 }
