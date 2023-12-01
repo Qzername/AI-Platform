@@ -1,4 +1,4 @@
-const api = "https://50e6-185-93-74-95.ngrok-free.app/api/"
+const api = "http://localhost:5000/api/"
 
 function httpRequest(theUrl, requestType, obj = null, contentType = 'application/json')
 {

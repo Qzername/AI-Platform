@@ -8,6 +8,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Models\ModelIdentifier.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Include="Models\ModelIdentifier.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Keras.NET" Version="3.8.5" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="7.0.10" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.9" />
@@ -18,10 +26,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Database\database.db">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Database\Models\FirstRun.h5">
+    <None Update="Database\Models\Digit Detector\V1 - test.h5">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

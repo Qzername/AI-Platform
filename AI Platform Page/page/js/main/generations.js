@@ -1,25 +1,32 @@
 currentSelectedGeneration = -1
+generations = []
 
 function refreshGenerations(id)
 {
-    var generations = experiments[id].generations
+  generations = experiments[id].generations
 
-    var html = ""
+  var html = ""
 
-    for(var g in generations)
-    {
-        html += `
-                <div class="d-inline bg-darkTheme2">
-                  <div class="d-inline triangle">
-                    <div class="d-inline px-1 triangle-offset">
-                      ${generations[g].name}
-                    </div>
+  for(var g in generations)
+  {
+      html += `
+              <div onclick="generationClicked(${generations[g].ID})" class="d-inline bg-darkTheme2">
+                <div class="d-inline triangle">
+                  <div class="d-inline px-1 triangle-offset">
+                    ${generations[g].name}
                   </div>
-                </div>`
-        
-    }
+                </div>
+              </div>`
+      
+  }
 
-    document.getElementById("generationList").innerHTML = html
+  document.getElementById("generationList").innerHTML = html
+}
+
+function generationClicked(id){
+  currentSelectedGeneration = id
+
+  document.getElementById("pageContent").innerHTML = generations[id].HTML
 }
 
 let formData

@@ -43,7 +43,16 @@ namespace AIPlatformAPI.Data
         }
         
         public void CreateExperiment(string name) => sqlManager.ExecuteNonQuery($"INSERT INTO Experiments(Name) VALUES(\"{name}\")");
-        public void DeleteExperiment(int experimentID) => sqlManager.ExecuteNonQuery($"DELETE FROM Experiments WHERE ID={experimentID}");
+        public void DeleteExperiment(int experimentID)
+        {
+            var experiment = sqlManager.SelectSingle<Experiment>($"SELECT * FROM Experiments WHERE ID = {experimentID}");
 
+            var generations = generationDatabase.GetGenerations(experimentID);
+
+            foreach (var generation in generations)
+                generationDatabase.DeleteGeneration(experiment, generation.ID);
+
+            sqlManager.ExecuteNonQuery($"DELETE FROM Experiments WHERE ID={experimentID}");
+        }
     }
 }

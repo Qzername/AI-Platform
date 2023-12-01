@@ -26,7 +26,7 @@ builder.Services.AddSingleton(typeof(GenerationDatabase));
 builder.Services.AddSingleton(typeof(GroupDatabase));
 builder.Services.AddSingleton(typeof(PermissionDatabase));
 
-builder.Services.AddSingleton(typeof(ModelManagmentService));
+builder.Services.AddSingleton(typeof(ModelManagementService));
 
 //JSON
 builder.Services.AddControllers(options =>

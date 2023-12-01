@@ -1,4 +1,5 @@
 ﻿using AIPlatformAPI.Data;
+using AIPlatformAPI.Services;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -36,6 +37,7 @@ namespace AIPlatformAPI.Controllers
         public IActionResult Delete(int generationID)
         { 
             generationDatabase.DeleteGeneration(generationID);
+
             return Ok();
         }
     }
