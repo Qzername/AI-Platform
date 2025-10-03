@@ -11,35 +11,6 @@ token = config['BASE']['token']
 
 import json
 
-test = { "s" : """
-**Definitions:**
-- `DefaultConv2D` is Convoluted layer 2D with `kernel_size=3, padding="same", activation="relu", kernel_initializer="he_normal"`
-
-**Structure:**
-1. `DefaultConv2D` with `filters=64, kernel_size=7, input_shape=[160,90,3]`
-2. Max Pooling 2D
-3. `DefaultConv2D` with `filters=128`
-4. Max Pooling 2D
-5. Flatten
-6. `Dense` with `units=64, activation="relu", kernel_initializer="he_normal"`
-7. `Dense` with `units=1, activation="sigmoid"`
-
-Output is 0.0-1.0 float value with 0 meaning cat is more likely to be on the picture, and 1 meaning dog is more likely to be on the picture
-
-**Dataset and training**
-Trained 10 epoches on microsoft/cats_vs_dogs dataset
-
-Model is compiled with parameters: `loss="binary_crossentropy", optimizer="nadam", metrics=["accuracy"]`
-
-**Statistics**
-Total params: 14,584,836 (55.64 MB)
- Trainable params: 7,292,417 (27.82 MB)
- Non-trainable params: 0 (0.00 B)
- Optimizer params: 7,292,419 (27.82 MB)
-"""}
-
-json.
-
 model_collection = {}
 
 with open('models_info.json') as f:
@@ -103,7 +74,24 @@ async def on_message(message):
     if message.author == client.user:
         return
     
-    model_name = message.content.split(' ')[-1]
+    splited = message.content.split(' ')
+    model_name = ""
+    
+    if len(splited) > 2:
+       model_name = splited[2]
+    
+    model_version = ""
+
+    if len(splited) > 3:
+        model_version = splited[3]
+
+    if message.content.startswith("$aip help"):
+        await message.channel.send("""
+$aip predict [model name] - depending on model, result can be diffrent
+$aip list - lists all models implemented into bot
+$aip structure [model name] [version name] - gives advanced description about model structure
+                                   """)
+        return
 
     if message.content.startswith('$aip predict'):
         if message.attachments:
@@ -120,11 +108,28 @@ async def on_message(message):
         final_message = ""
         
         for k,v in model_collection.items():
-            final_message += "**" + k + "** - " + v["description"] 
+            final_message += "# " + k + "\nDescription: " + v["description"] + "\n"
+            
+            final_message += "\nversions:\n"
+            for version in v["versions"]:
+                final_message += "- " + version["name"] + "\n"
 
         await message.channel.send(final_message)
 
     if message.content.startswith("$aip structure"):
-        await message.channel.send(model_collection[model_name]["versions"][0]["structure"])
+        versions = model_collection[model_name]["versions"]
+                                        
+        if model_version == "":
+            await message.channel.send("Provide version of the model")
+        else:
+            versionIndex = 0
+
+            for version in versions:
+                if version["name"] == model_version:
+                    break
+                else:
+                    versionIndex+=1
+
+            await message.channel.send(versions[versionIndex]["structure"])
 
 client.run(token)

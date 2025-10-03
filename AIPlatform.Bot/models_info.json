@@ -6,7 +6,7 @@
             {
                 "name" : "mk1",
                 "path" : "models/c-d-clas.mk1.keras",
-                "structure": "test",
+                "structure": "\n**Definitions:**\n- `DefaultConv2D` is Convoluted layer 2D with `kernel_size=3, padding=\"same\", activation=\"relu\", kernel_initializer=\"he_normal\"`\n\n**Structure:**\n1. `DefaultConv2D` with `filters=64, kernel_size=7, input_shape=[160,90,3]`\n2. Max Pooling 2D\n3. `DefaultConv2D` with `filters=128`\n4. Max Pooling 2D\n5. Flatten\n6. `Dense` with `units=64, activation=\"relu\", kernel_initializer=\"he_normal\"`\n7. `Dense` with `units=1, activation=\"sigmoid\"`\n\nOutput is 0.0-1.0 float value with 0 meaning cat is more likely to be on the picture, and 1 meaning dog is more likely to be on the picture\n\n**Dataset and training**\nTrained 10 epoches on microsoft/cats_vs_dogs dataset\n\nModel is compiled with parameters: `loss=\"binary_crossentropy\", optimizer=\"nadam\", metrics=[\"accuracy\"]`\n\n**Statistics**\nTotal params: 14,584,836 (55.64 MB)\n Trainable params: 7,292,417 (27.82 MB)\n Non-trainable params: 0 (0.00 B)\n Optimizer params: 7,292,419 (27.82 MB)",
                 "default" : true
             }
         ]
