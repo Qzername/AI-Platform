@@ -1,0 +1,14 @@
+[
+    {
+        "name":"c-d-clas",
+        "description": "**C**at/**D**og **Clas**sifier",
+        "versions":[
+            {
+                "name" : "mk1",
+                "path" : "models/c-d-clas.mk1.keras",
+                "structure": "test",
+                "default" : true
+            }
+        ]
+    }
+]
