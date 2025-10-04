@@ -44,7 +44,7 @@ async def get_prediction_from_attachments(attachments, model_name):
     for attachment in attachments: 
         if attachment.filename.lower().endswith((".png", ".jpg", ".jpeg", ".webp", ".gif")): 
             img_bytes = await attachment.read()
-            prediciton = model_collection[model_name]["versions"][0].predict(load_image(img_bytes))
+            prediciton = model_collection[model_name]["versions"][0]["model"].predict(load_image(img_bytes))
 
             prediciton_text = ""
 
@@ -66,7 +66,8 @@ intents.message_content = True
 client = discord.Client(intents=intents)
 
 @client.event
-async def on_ready():
+async def on_ready():   
+    await client.change_presence(status=discord.Status.online, activity=discord.Activity(type=discord.ActivityType.listening, name="$aip help | " + config['BASE']['version']))
     print(f'We have logged in as {client.user}')
 
 @client.event
