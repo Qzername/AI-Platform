@@ -4,8 +4,8 @@ class Generator(nn.Module):
     def __init__(self):
         super().__init__()
         self.model = nn.Sequential(
-            nn.Linear(6 * 8 * 512, 6 * 8 * 512),  # matches tf.Dense(6*8*512)
-            nn.Unflatten(1, (512, 6, 8)),         # reshape to [B, 512, 6, 8]
+            nn.Linear(256, 6 * 8 * 512),
+            nn.Unflatten(1, (512, 8, 6)),
             nn.BatchNorm2d(512),
             
             nn.ConvTranspose2d(512, 128, kernel_size=7, stride=2, padding=3, output_padding=1),
@@ -39,7 +39,7 @@ class Discriminator(nn.Module):
             nn.Dropout(0.3),
 
             nn.Flatten(),
-            nn.Linear(256, 1),
+            nn.Linear(24576, 1),
             nn.Sigmoid()
         )
 

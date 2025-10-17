@@ -20,7 +20,7 @@ def prepare_dataset(dataset):
         return example
         
     def normalize(example):
-        example["image"] = torch.tensor(np.array(example["image"])).permute(2, 0, 1).float()  # CHW
+        example["image"] = torch.tensor(np.array(example["image"])).permute(2, 0, 1).float()  
         example["image"] = (example["image"] / 127.5) - 1.0
         return example
 
@@ -34,4 +34,4 @@ def save_dataset(dataset, path):
     dataset.save_to_disk(path)
 
 def dataset_to_torch(dataset):
-    return dataset.with_format("torch")
+    return dataset["train"].with_format("torch")
