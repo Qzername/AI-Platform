@@ -23,8 +23,8 @@ def dcgan(generator, discriminator, dataset_split, batch_size, codings_size, n_e
     for epoch in range(n_epoches):
         start = time.time()
 
-        for i, data in enumerate(dataloader,0):
-            X_batch = data["image"].to(device)
+        for images, labels in dataloader:
+            X_batch = images.to(device)
             current_batch_size = X_batch.size(0)
             
             # === Phase 1: Train Discriminator ===
@@ -69,4 +69,3 @@ def dcgan(generator, discriminator, dataset_split, batch_size, codings_size, n_e
             plt.imshow(img)
             plt.axis("off")
         plt.show()
-

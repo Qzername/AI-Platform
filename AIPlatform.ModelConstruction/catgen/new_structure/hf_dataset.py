@@ -3,9 +3,13 @@ from datasets import load_from_disk
 from PIL import Image
 import torch
 import numpy as np
+import os
 
-def download_dataset():
-    dataset = load_dataset("microsoft/cats_vs_dogs")
+# this file manages downloading and preparing of any 
+# image hugging face dataset
+
+def download_dataset(url):
+    dataset = load_dataset(url)
     dataset = dataset.filter(lambda a: a["labels"] == 0)
     return dataset
 
@@ -35,3 +39,13 @@ def save_dataset(dataset, path):
 
 def dataset_to_torch(dataset):
     return dataset["train"].with_format("torch")
+
+def full_load(url):
+    if not os.path.isdir('./dataset/'):
+        dataset = download_dataset(url)
+        dataset = prepare_dataset(dataset)
+        save_dataset(dataset, "./dataset/")
+
+    dataset = load_saved_dataset("./dataset/")
+    return dataset_to_torch(dataset)
+
