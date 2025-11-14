@@ -11,19 +11,19 @@ def download_dataset(url):
     dataset = load_dataset(url)
     return dataset
 
-def prepare_dataset(dataset):
+def prepare_dataset(dataset, image_id):
     def to_rgb(example):
-        if example["image"].mode != "RGB":
-            example["image"] = example["image"].convert("RGB")
+        if example[image_id].mode != "RGB":
+            example[image_id] = example[image_id].convert("RGB")
         return example
     
     def resize(example):
-        example["image"] = example["image"].resize((64,64), Image.Resampling.BILINEAR)
+        example[image_id] = example[image_id].resize((64,64), Image.Resampling.BILINEAR)
         return example
         
     def normalize(example):
-        example["image"] = torch.tensor(np.array(example["image"])).permute(2, 0, 1).float()  
-        example["image"] = (example["image"] / 127.5) - 1.0
+        example[image_id] = torch.tensor(np.array(example[image_id])).permute(2, 0, 1).float()  
+        example[image_id] = (example[image_id] / 127.5) - 1.0
         return example
 
     dataset = dataset.map(to_rgb).map(resize)#.map(normalize)
@@ -38,11 +38,11 @@ def save_dataset(dataset, path):
 def dataset_to_torch(dataset):
     return dataset["train"].with_format("torch")
 
-def full_load(url):
-    if not os.path.isdir('./dataset_hf/'):
+def full_load(url, path, image_label):
+    if not os.path.isdir(path):
         dataset = download_dataset(url)
-        dataset = prepare_dataset(dataset)
-        save_dataset(dataset, "./dataset_hf/")
+        dataset = prepare_dataset(dataset, image_label)
+        save_dataset(dataset, path)
 
-    return load_saved_dataset("./dataset_hf/")
+    return load_saved_dataset(path)
 
