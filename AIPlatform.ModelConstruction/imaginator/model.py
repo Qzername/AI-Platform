@@ -15,7 +15,7 @@ class Imaginator(nn.Module):
             nn.LeakyReLU(0.2, inplace=True),
 
             nn.Flatten(),
-            nn.Linear(16384, 1),
+            nn.Linear(16384, 3),
         )
 
     def forward(self, x):

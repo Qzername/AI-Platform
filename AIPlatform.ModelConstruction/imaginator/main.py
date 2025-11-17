@@ -1,7 +1,12 @@
 import hf_dataset
 import os
 import random
+from torchvision import datasets, transforms
+import torch.nn as nn
+import torch.optim as optimizers
 import torch
+import devices
+import shutil
 
 # --- CONFIG --- 
 
@@ -9,6 +14,8 @@ manualSeed = 44
 print("Random Seed: ", manualSeed)
 random.seed(manualSeed)
 torch.manual_seed(manualSeed)
+
+device = devices.get_current()
 
 # --- PREPARE DATASET ---
 
@@ -22,8 +29,6 @@ BIRDS_DATASET_IMAGE_LABEL = "jpg"
 # 0 - cat
 # 1 - dog 
 # 2 - bird
-
-dataset = []
 
 if not os.path.isdir(FINAL_DATASET_PATH) or not os.path.isdir(FINAL_DATASET_PATH+"1/"):
     cats_dogs_dataset = hf_dataset.full_load("microsoft/cats_vs_dogs", CATS_DOGS_DATASET_PATH, CATS_DOGS_DATASET_IMAGE_LABEL)
@@ -41,37 +46,46 @@ if not os.path.isdir(FINAL_DATASET_PATH) or not os.path.isdir(FINAL_DATASET_PATH
     for i, example in enumerate(birds_dataset["train"]):
         example[BIRDS_DATASET_IMAGE_LABEL].save("./dataset/2/" + str(i) + ".jpg")
 
+    shutil.rmtree(CATS_DOGS_DATASET_PATH)
+    shutil.rmtree(BIRDS_DATASET_PATH)
 
 # --- MODEL & TRAINING --- 
 import model 
 from torch.utils.data import DataLoader
 
 EPOCHES = 10
-BATCH_SIZE = 32
+BATCH_SIZE = 128
 
+transform = transforms.Compose([
+    transforms.Resize((64, 64)),
+    transforms.ToTensor(),
+])
+
+dataset = datasets.ImageFolder(root="dataset", transform=transform)
 dataloader = DataLoader(dataset, BATCH_SIZE, shuffle=True)
 
 imaginator = model.Imaginator()
+imaginator.to(device)
 
-for epoch in range(2):  # loop over the dataset multiple times
+optimizer = optimizers.Adam(imaginator.parameters(), lr=1e-4)
+loss = nn.CrossEntropyLoss()
+
+for epoch in range(EPOCHES):  # loop over the dataset multiple times
 
     running_loss = 0.0
     for i, data in enumerate(dataloader, 0):
-        # get the inputs; data is a list of [inputs, labels]
         inputs, labels = data
 
-        # zero the parameter gradients
         optimizer.zero_grad()
 
-        # forward + backward + optimize
-        outputs = net(inputs)
-        loss = criterion(outputs, labels)
-        loss.backward()
+        outputs = imaginator(inputs)
+        loss_v = loss(outputs, labels)
+        loss_v.backward()
         optimizer.step()
 
-        # print statistics
-        running_loss += loss.item()
-        if i % 2000 == 1999:    # print every 2000 mini-batches
+        running_loss += loss_v.item()
+
+        if i % 2000 == 1999:
             print(f'[{epoch + 1}, {i + 1:5d}] loss: {running_loss / 2000:.3f}')
             running_loss = 0.0
 
