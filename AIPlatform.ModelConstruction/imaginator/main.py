@@ -70,11 +70,12 @@ imaginator.to(device)
 optimizer = optimizers.Adam(imaginator.parameters(), lr=1e-4)
 loss = nn.CrossEntropyLoss()
 
-for epoch in range(EPOCHES):  # loop over the dataset multiple times
+for epoch in range(EPOCHES): 
 
     running_loss = 0.0
-    for i, data in enumerate(dataloader, 0):
-        inputs, labels = data
+    for i, (inputs, labels) in enumerate(dataloader, 0):
+        inputs.to(device, non_blocking=True)
+        labels.to(device, non_blocking=True)
 
         optimizer.zero_grad()
 
