@@ -8,17 +8,7 @@ import torch
 import devices
 import shutil
 
-# --- CONFIG --- 
-
-manualSeed = 44
-print("Random Seed: ", manualSeed)
-random.seed(manualSeed)
-torch.manual_seed(manualSeed)
-
-device = devices.get_current()
-
 # --- PREPARE DATASET ---
-
 CATS_DOGS_DATASET_PATH = "./cats_dogs_dataset/"
 BIRDS_DATASET_PATH = "./birds_dataset/"
 FINAL_DATASET_PATH = "./dataset/"
@@ -49,45 +39,75 @@ if not os.path.isdir(FINAL_DATASET_PATH) or not os.path.isdir(FINAL_DATASET_PATH
     shutil.rmtree(CATS_DOGS_DATASET_PATH)
     shutil.rmtree(BIRDS_DATASET_PATH)
 
-# --- MODEL & TRAINING --- 
-import model 
-from torch.utils.data import DataLoader
+    # --- CONFIG --- 
+if __name__ == '__main__':
 
-EPOCHES = 10
-BATCH_SIZE = 128
+    manualSeed = 44
+    print("Random Seed: ", manualSeed)
+    random.seed(manualSeed)
+    torch.manual_seed(manualSeed)
+    
+    device = devices.get_current()
+        
+    # --- MODEL & TRAINING --- 
 
-transform = transforms.Compose([
-    transforms.Resize((64, 64)),
-    transforms.ToTensor(),
-])
+    import model 
+    from torch.utils.data import DataLoader
+    import time
 
-dataset = datasets.ImageFolder(root="dataset", transform=transform)
-dataloader = DataLoader(dataset, BATCH_SIZE, shuffle=True)
+    EPOCHES = 100
+    BATCH_SIZE = 256
 
-imaginator = model.Imaginator()
-imaginator.to(device)
+    transform = transforms.Compose([
+        transforms.Resize((64, 64)),
+        transforms.ToTensor(),
+    ])
 
-optimizer = optimizers.Adam(imaginator.parameters(), lr=1e-4)
-loss = nn.CrossEntropyLoss()
+    dataset = datasets.ImageFolder(root="dataset", transform=transform)
 
-for epoch in range(EPOCHES): 
+    num_workers = min(8, os.cpu_count())
 
-    running_loss = 0.0
-    for i, (inputs, labels) in enumerate(dataloader, 0):
-        inputs.to(device, non_blocking=True)
-        labels.to(device, non_blocking=True)
+    dataloader = DataLoader(dataset,
+                            BATCH_SIZE, 
+                            shuffle=True,
+                            num_workers=num_workers, 
+                            pin_memory=True,        
+                            persistent_workers=True)
 
-        optimizer.zero_grad()
+    imaginator = model.Imaginator()
+    imaginator.to(device)
 
-        outputs = imaginator(inputs)
-        loss_v = loss(outputs, labels)
-        loss_v.backward()
-        optimizer.step()
+    optimizer = optimizers.Adam(imaginator.parameters(), lr=1e-4)
+    loss = nn.CrossEntropyLoss()
 
-        running_loss += loss_v.item()
+    for epoch in range(EPOCHES): 
 
-        if i % 2000 == 1999:
-            print(f'[{epoch + 1}, {i + 1:5d}] loss: {running_loss / 2000:.3f}')
-            running_loss = 0.0
+        total_num = 0
+        running_loss = 0.0
+        start_time = time.time()
 
-print('Finished Training')
+        for i, (inputs, labels) in enumerate(dataloader, 0):
+            inputs = inputs.to(device, non_blocking=True)
+            labels = labels.to(device, non_blocking=True)
+
+            optimizer.zero_grad()
+
+            outputs = imaginator(inputs)
+            loss_v = loss(outputs, labels)
+            loss_v.backward()
+            optimizer.step()
+
+            running_loss += loss_v.item()
+            total_num += 1
+
+        print("--------------")
+        print("EPOCH: ", epoch+1)
+        print(f'LOSS: {running_loss / total_num:.3f}')
+
+        end_time = time.time()
+        elapsed_time = end_time - start_time
+
+        print("ELAPSED TIME: ", elapsed_time)
+
+    print('Finished Training')
+    torch.save(imaginator, "./imaginator.pth")
