@@ -1,7 +1,22 @@
+#configure tf to use as small amount of resources as possible
+
+import os
+os.environ['CUDA_VISIBLE_DEVICES'] = '-1'
+
+import tensorflow as tf
+tf.config.threading.set_intra_op_parallelism_threads(1)
+tf.config.threading.set_inter_op_parallelism_threads(1)
+
+# actuall main.py
+
 import configparser
 import discord
 from discord.ext import commands
 import os
+
+import model_handler
+
+model_handler.prepare_collection()
 
 config = configparser.ConfigParser()
 config.read('config.ini')

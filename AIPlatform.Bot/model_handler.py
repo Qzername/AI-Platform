@@ -60,5 +60,3 @@ def prepare_collection():
             print("loaded model:", model_info["id"])
 
     print("models loaded")
-
-prepare_collection()
